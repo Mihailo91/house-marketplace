@@ -9,7 +9,7 @@ function Profile() {
     setUser(auth.currentUser)
   }, [])
   
-  return user ? <h1>{user.displayName}</h1> : <h1>Not logged in</h1>
+  return user ? <h1>{user.displayName}</h1> : <h1>Not loged in</h1>
 }
 
-export default Profile
+export default Profile 
