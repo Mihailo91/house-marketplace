@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg'
 import visibilityIcon from '../assets/svg/visibilityIcon.svg'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
-import { toast } from "react-toastify"
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
@@ -32,10 +32,11 @@ function SignIn() {
       if (userCredentials.user) {
         navigate('/')
       }
+
     } catch (error) {
-      console.log('Log in error' + error)
+      toast.error('Invalid credentials.')
     }
-   
+
   }
 
   return (
