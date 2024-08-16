@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { collection, getDocs, query, orderBy, limit, Timestamp } from 'firebase/firestore'
+import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore'
 import { db } from "../firebase.config"
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/swiper-bundle.css'
@@ -39,6 +39,9 @@ function Slider() {
         <Spinner />
     }
 
+    if (listings && listings.length === 0) {
+        return <></>
+    }
     return listings && (
         <>
             <p className="exploreHeading">Recommended</p>
