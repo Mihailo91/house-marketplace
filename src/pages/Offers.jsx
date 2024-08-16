@@ -32,7 +32,7 @@ const Offers = () => {
                     listingsRef,
                     where('offer', '==', true),
                     orderBy('timestamp', 'desc'),
-                    limit(1)
+                    limit(10)
                 )
 
                 // Execute query
@@ -59,7 +59,7 @@ const Offers = () => {
         }
 
         fetchListings()
-    },)
+    },[])
 
       // pagination load more
       const onFetchMoreListings = async () => {
@@ -73,7 +73,7 @@ const Offers = () => {
             where('offer', '==', true),
             orderBy('timestamp', 'desc'),
             startAfter(lastFetchedListing),
-            limit(1)
+            limit(10)
           )
     
           // Execute query
