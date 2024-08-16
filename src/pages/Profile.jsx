@@ -33,22 +33,22 @@ function Profile() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const fetchUserListings = async () =>{
-    const listingsRef = collection(db, 'listings')
-    const q = query(listingsRef, where('userRef', '==', auth.currentUser.uid), orderBy('timestamp', 'desc'))
-    const querySnap = await getDocs(q)
+    const fetchUserListings = async () => {
+      const listingsRef = collection(db, 'listings')
+      const q = query(listingsRef, where('userRef', '==', auth.currentUser.uid), orderBy('timestamp', 'desc'))
+      const querySnap = await getDocs(q)
 
-    let listings = []
+      let listings = []
 
-    querySnap.forEach((doc) => {
-      return listings.push({
-        id: doc.id,
-        data: doc.data()
+      querySnap.forEach((doc) => {
+        return listings.push({
+          id: doc.id,
+          data: doc.data()
+        })
       })
-    })
-    console.log(listings)
-    setListings(listings)
-    setLoading(false)
+      console.log(listings)
+      setListings(listings)
+      setLoading(false)
     }
 
     fetchUserListings()
@@ -89,16 +89,19 @@ function Profile() {
   }
 
   const onDelete = async (listingId) => {
-    if(window.confirm('Are you sure you want to delete?')){
+    if (window.confirm('Are you sure you want to delete?')) {
       await deleteDoc(doc(db, 'listings', listingId))
       const updatedListing = listings.filter((listing) => listing.id !== listingId)
       setListings(updatedListing)
       toast.success('Succesfullt deleted listing')
     }
-
   }
 
-return <div className='profile'>
+  const onEdit = (listingId) => {
+    navigate(`/edit-listing/${listingId}`)
+  }
+
+  return <div className='profile'>
     <header className="profileHeader">
       <p className="pageHeader">My profile</p>
       <button className="logOut"
@@ -142,20 +145,21 @@ return <div className='profile'>
         <img src={arrowRight} alt="Right" />
       </Link>
       {!loading && listings?.length > 0 && (
-          <>
-            <p className='listingText'>Your Listings</p>
-            <ul className='listingsList'>
-              {listings.map((listing) => (
-                <ListingItem
-                  key={listing.id}
-                  listing={listing.data}
-                  id={listing.id}
-                  onDelete={() => onDelete(listing.id)}
-                />
-              ))}
-            </ul>
-          </>
-        )}
+        <>
+          <p className='listingText'>Your Listings</p>
+          <ul className='listingsList'>
+            {listings.map((listing) => (
+              <ListingItem
+                key={listing.id}
+                listing={listing.data}
+                id={listing.id}
+                onDelete={() => onDelete(listing.id)}
+                onEdit={() => onEdit(listing.id)}
+              />
+            ))}
+          </ul>
+        </>
+      )}
     </main >
   </div >
 }
