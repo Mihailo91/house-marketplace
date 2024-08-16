@@ -6,7 +6,9 @@ import { db } from "../firebase.config"
 import { Spinner } from "../components/Spinner"
 import shareIcon from '../assets/svg/shareIcon.svg'
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
-
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper-bundle.css'
+import { Navigation } from 'swiper/modules';
 
 function Listing() {
     const [listing, setListing] = useState(null)
@@ -37,7 +39,23 @@ function Listing() {
 
     return (
         <main>
-            {/* SLIDER */}
+            {/* <Helmet> */}
+                <title>{listing.name}</title>
+            {/* </Helmet> */}
+            <Swiper navigation={true} modules={[Navigation]} >
+                {listing.imageUrls.map((url, index) => (
+                    <SwiperSlide key={index}>
+                        <div
+                            style={{
+                                background: `url(${listing.imageUrls[index]}) center no-repeat`,
+                                backgroundSize: 'cover',
+                            }}
+                            className='swiperSlideDiv'
+                        ></div>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+
             <div className="shareIconDiv"
                 onClick={() => {
                     navigator.clipboard.writeText(window.location.href)
@@ -90,15 +108,15 @@ function Listing() {
                 <p className="listingLocationTitle">Location</p>
                 <div className="leafletContainer">
                     <MapContainer style={{ height: '100%', width: '100%' }}
-                        center={[listing.geoLocation.lat, listing.geoLocation.log]} 
-                        zoom={13} 
+                        center={[listing.geolocation.lat, listing.geolocation.lng]}
+                        zoom={13}
                         scrollWheelZoom={false}>
                         <TileLayer
                             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                             url='https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
                         />
                         <Marker
-                            position={[listing.geoLocation.lat, listing.geoLocation.log]}
+                            position={[listing.geolocation.lat, listing.geolocation.lng]}
                         >
                             <Popup>{listing.location}</Popup>
                         </Marker>
